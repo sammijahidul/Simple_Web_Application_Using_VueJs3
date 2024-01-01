@@ -1,3 +1,3 @@
 <template>
-    ByIngredients
+    Login Page
 </template>
