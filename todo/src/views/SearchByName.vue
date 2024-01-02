@@ -1,5 +1,5 @@
 <template>
-    <div class="p-8">
+    <div class="p-8 pb-0">
         <input 
             type="text" 
             v-model="keyword"
@@ -17,27 +17,36 @@
                 <p class="mb-4">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque nobis animi officia doloribus.
                 </p>
-                <div>
-                    <a :href="meal.strYoutube" target="_blank" class="px-3 py-2 rounded border-2 border-red-600 hover:bg-red-600 hover:text-white transition-colors">YouTube</a>
-                    <router-link to="/">
+                <div class="flex items-center justify-between">
+                    <YouTubeButton :href="meal.strYoutube"/>
+                    <router-link :to="{name: 'mealDetails',  params: {id: meal.idMeal} }" class="px-3 py-2 rounded border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
                         View
                     </router-link>
                 </div>
             </div>
-
         </div>
     </div>
 </template>
 
 <script setup>
+import { useRoute } from 'vue-router';
 import store from '../store'; 
-import { computed,  ref } from 'vue'; 
+import { computed,  onMounted,  ref } from 'vue'; 
+import YouTubeButton from '@/components/YouTubeButton.vue';
 
 const keyword = ref('');
 const meals = computed(() => store.state.searchedMeals);
+const route = useRoute();
 
  function searchMeals() {
     store.dispatch('searchMeals', keyword.value)
 }
+
+onMounted(() => {
+    keyword.value = route.params.name;
+    if (keyword.value) {
+        searchMeals();
+    }
+})
 
 </script>
